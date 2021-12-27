@@ -4,6 +4,7 @@ import {SafeAreaView, StyleSheet} from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { createDrawerNavigator } from '@react-navigation/drawer';
+import { initializeApp } from "firebase/app";
 
 import Login from './src/screens/login/login';
 import Home from './src/screens/home/home';
@@ -14,9 +15,19 @@ import Market from './src/screens/market/market';
 
 const Stack = createNativeStackNavigator();
 const Drawer = createDrawerNavigator();
+const firebaseConfig = {
+  apiKey: "AIzaSyBE_-xpFeQYe1TOE9DzHPtJNFoyN-2ZlUA",
+  authDomain: "ambrosia-bef41.firebaseapp.com",
+  projectId: "ambrosia-bef41",
+  storageBucket: "ambrosia-bef41.appspot.com",
+  messagingSenderId: "278877228571",
+  appId: "1:278877228571:web:87c5e693bb5e48fc00b2be",
+  measurementId: "G-XFSPHDCHFD"
+};
 
 const App = () => {
 
+  const app = initializeApp(firebaseConfig);
   return (
     <NavigationContainer>
       <Stack.Navigator>

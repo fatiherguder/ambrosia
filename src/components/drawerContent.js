@@ -2,6 +2,7 @@
 import React from 'react';
 import {Dimensions, View, StyleSheet, Text, TouchableOpacity, Image} from 'react-native';
 import { DrawerContentScrollView, DrawerItem } from '@react-navigation/drawer';
+import { SafeAreaView } from 'react-native-safe-area-context';
 
 const DrawerContent = (props) => {
 

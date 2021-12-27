@@ -32,7 +32,8 @@ const styles = StyleSheet.create({
     nav:{
         backgroundColor:'#457b9d',
         height: windowHeight*0.3,
-        padding:windowWidth*0.05
+        paddingRight:windowWidth*0.05,
+        paddingLeft:windowWidth*0.05
     },
     titleArea:{
         alignItems:'center',

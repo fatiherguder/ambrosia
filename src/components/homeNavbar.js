@@ -7,8 +7,6 @@ import AppLoading from 'expo-app-loading';
 
 const HomeNavbar = (props) => {
 
-    
-
   return (
     <>
         <View style={styles.navbar}>
@@ -21,7 +19,7 @@ const HomeNavbar = (props) => {
                 </TouchableOpacity>
             </View>
             <Text style={styles.title}>Ambrosia</Text>
-            <Text style={styles.subtitle}>Hoşgeldiniz</Text>
+            <Text style={styles.subtitle}>Hoşgeldiniz {props.name}</Text>
         </View>
     </>
   );
@@ -40,7 +38,8 @@ const styles = StyleSheet.create({
         height:30
     },
     iconArea:{
-        padding: windowWidth*0.05,
+        paddingLeft: windowWidth*0.05,
+        paddingRight: windowWidth*0.05,
     },
     iconRow:{
         flexDirection: 'row',

@@ -6,6 +6,7 @@ import CartItem from '../../components/cartItem';
 import HomeNavbar from '../../components/homeNavbar';
 import Navbar from '../../components/navbar';
 import { ScrollView } from 'react-native-gesture-handler';
+import { SafeAreaView } from 'react-native-safe-area-context';
 
 const Cart = (props) => {
 
@@ -15,13 +16,15 @@ const Cart = (props) => {
 
   return (
     <>
-        <Navbar navigation={props.navigation}/>
-        <ScrollView style={styles.bg}>
-            <CartItem count={1} market={'Kopernik Pizza'} product={'Full Karışık Mars Pizza'} price={75} img={pizza1}/>
-            <CartItem count={1} market={'Kopernik Pizza'} product={'Venüs Pizza'} price={60} img={pizza2}/>
-            <CartItem count={2} market={'Kopernik Pizza'} product={'Güneş Pizza'} price={120} img={pizza3}/>
-        </ScrollView>
-        <TouchableOpacity style={styles.btn}><Text style={styles.btnText}>Sepeti Onayla</Text></TouchableOpacity>
+        <SafeAreaView style={{backgroundColor:'#457b9d'}}>
+            <Navbar navigation={props.navigation}/>
+            <ScrollView style={styles.bg}>
+                <CartItem count={1} market={'Kopernik Pizza'} product={'Full Karışık Mars Pizza'} price={75} img={pizza1}/>
+                <CartItem count={1} market={'Kopernik Pizza'} product={'Venüs Pizza'} price={60} img={pizza2}/>
+                <CartItem count={2} market={'Kopernik Pizza'} product={'Güneş Pizza'} price={120} img={pizza3}/>
+            </ScrollView>
+            <TouchableOpacity style={styles.btn}><Text style={styles.btnText}>Sepeti Onayla</Text></TouchableOpacity>
+        </SafeAreaView>
     </>
   );
 };
@@ -42,7 +45,8 @@ const styles = StyleSheet.create({
     btn:{
         backgroundColor:'#457b9d',
         position:'absolute',
-        bottom:windowWidth*0.1,
+        top:windowHeight*0.85,
+        bottom:windowHeight*0,
         width:windowWidth*0.5,
         height:windowHeight*0.05,
         alignItems:'center',

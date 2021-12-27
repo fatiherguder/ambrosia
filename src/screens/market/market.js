@@ -1,7 +1,7 @@
-
 import React from 'react';
 import {Dimensions, View, StyleSheet, Text, TouchableOpacity, Image, Alert} from 'react-native';
 import { ScrollView } from 'react-native-gesture-handler';
+import { SafeAreaView } from 'react-native-safe-area-context';
 import MarketItem from '../../components/marketItem';
 import Navbar from '../../components/navbar';
 const Market = (props) => {
@@ -25,7 +25,7 @@ const Market = (props) => {
 
   return (
     <>
-        <View style={styles.nav}>
+        <SafeAreaView style={styles.nav}>
             <View style={styles.iconRow}>
                 <TouchableOpacity style={styles.iconArea} onPress={() => props.navigation.navigate('Home')}>
                     <Image source={require('../../assets/icons/back.png')} style={styles.icon}/>
@@ -38,7 +38,7 @@ const Market = (props) => {
                 <Text style={styles.title}>SteakHouse</Text>
                 <Text style={styles.subtitle}>Sepetinde duracağına söyle midende dursun.</Text>
             </View>
-        </View>
+        </SafeAreaView>
 
         <ScrollView style={styles.bg}>
             <MarketItem title={'Steak Burger'} subtitle={'Steak Burger + Cips + İçecek'} price={'50'} img={burger}/>
@@ -59,7 +59,8 @@ const styles = StyleSheet.create({
     nav:{
         backgroundColor:'#457b9d',
         height: windowHeight*0.3,
-        padding:windowWidth*0.05
+        paddingRight:windowWidth*0.05,
+        paddingLeft:windowWidth*0.05
     },
     titleArea:{
         alignItems:'center',
