@@ -1,63 +1,50 @@
 
-import React,{useEffect, useState} from 'react';
+import React,{useEffect} from 'react';
 import {Dimensions, SafeAreaView, Image, StyleSheet, ScrollView,View,Text} from 'react-native';
-import CustomButton from '../../components/button';
 import CustomCard from '../../components/card';
 import HomeNavbar from '../../components/homeNavbar';
-import auth from '@react-native-firebase/auth';
-import { getFirestore, collection, getDoc, doc } from "firebase/firestore"
+import { getFirestore, getDoc, doc } from "firebase/firestore"
+import { useSelector, useDispatch } from 'react-redux'
+import { marketData, setMarketData } from '../../store/marketSlice';
 
 
-const Home = (props, route) => {
+const Home = (props) => {
   const db = getFirestore();
-  const userId = auth().currentUser.uid;
+  const dispatch = useDispatch()
 
-  const [userData, setUserData] = useState();
-  const [marketData, setMarketData] = useState([]);
-  const [loading, setLoading] = useState(true);
+
+  const userState = useSelector(state => state.userData)
+  const marketState = useSelector(state => state.marketData)
   
-  const getUserData = async () => {
-    const docSnap = await getDoc(doc(db, "users", userId));
-    setUserData(docSnap.data());
-    console.log(userData)
-    setLoading(false)
+
+  const getMarketData = async () => {
+       await userState[0].markets.map((item) =>{
+        getDoc(doc(db, "markets", item)).then(data=>
+          dispatch(setMarketData(data.data()))
+          );
+          
+      })
   }
 
-  const getMarketData = () => {
-    const array = [];
-    userData.markets.map(async (item) => {
-      const marketSnap = await getDoc(doc(db, "markets", item));
-      await array.push(marketSnap.data())
-      setMarketData(array);
-      return (console.log(marketData));
-    })
-  }
 
-  useEffect( () => {
-     getUserData().then(() => getMarketData())
-  })
+  useEffect(() => {
+    getMarketData()
+  },[marketData])
 
   var food1 = require('../../assets/img/food-1.jpg')
-  var food2 = require('../../assets/img/food-2.jpg')
-  var food3 = require('../../assets/img/food-3.jpg')
-  var food4 = require('../../assets/img/food-4.jpg')
-  var food5 = require('../../assets/img/food-5.jpg')
-  var food6 = require('../../assets/img/food-6.jpg')
 
   return (
     <View style={styles.background}>
       <SafeAreaView>
-        <HomeNavbar navigation={props.navigation} name={userData?.name}/>
+        <HomeNavbar navigation={props.navigation} name={userState[0]?.name}/>
           <View  style={styles.scrollArea}>
-            {
-              loading ? <Text>Loading ...</Text> : <ScrollView style={styles.scroll}>
+             <ScrollView style={styles.scroll}>
                 {
-                  marketData.map(market => {
-                    return <CustomCard img={market.img} title={market.name} score={market.score}  navigation={props.navigation}/>
-                  })
+                  marketState?.map((item,index) => <CustomCard img={food1} title={item?.name} score={item?.score} index={index}  navigation={props.navigation}/>
+                  )
                 }
             </ScrollView>
-            }
+            
           </View>
       </SafeAreaView>
     </View>

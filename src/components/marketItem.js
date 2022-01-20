@@ -2,7 +2,32 @@
 import React from 'react';
 import {Dimensions, View, StyleSheet, Text, TouchableOpacity, Image, Alert} from 'react-native';
 import { ScrollView } from 'react-native-gesture-handler';
+import { BottomNavigation } from 'react-native-paper';
+import { useDispatch } from 'react-redux';
+import { setCartData } from '../store/cartSlice';
 const MarketItem = (props) => {
+
+    const dispatch = useDispatch()
+
+    const createAlert = () =>
+    Alert.alert(
+      "Başarılı",
+      "Ürün sepete eklendi.",
+      [
+        {
+          text: "Alışverişe Devam Et",
+          onPress: () => console.log("Cancel Pressed"),
+          style: "cancel"
+        },
+        { text: "Sepete Git", onPress: () => props.navigation.navigate('Sepetim')}
+      ]
+    );
+
+    const onClick = async() => {
+        const data = await {title: props.title, subtitle: props.subtitle, price: props.price, marketName:props.name}
+        await dispatch(setCartData(data))
+        createAlert()
+    }
 
   return (
     <>
@@ -12,7 +37,7 @@ const MarketItem = (props) => {
                 <Text style={styles.subtitle}>{props.subtitle}</Text>
                 <View style={styles.priceArea}>
                     <Text style={styles.price}>{props.price}₺</Text>
-                    <TouchableOpacity>
+                    <TouchableOpacity onPress={() => onClick()}>
                         <Image source={require('../assets/icons/add.png')} style={styles.icon}/>
                     </TouchableOpacity>
                 </View>

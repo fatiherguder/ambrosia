@@ -12,6 +12,8 @@ import Profile from './src/screens/profile/profile';
 import DrawerContent from './src/components/drawerContent';
 import Cart from './src/screens/cart/cart';
 import Market from './src/screens/market/market';
+import { Provider } from 'react-redux';
+import store from './src/store/store';
 
 const Stack = createNativeStackNavigator();
 const Drawer = createDrawerNavigator();
@@ -29,17 +31,20 @@ const App = () => {
 
   const app = initializeApp(firebaseConfig);
   return (
-    <NavigationContainer>
-      <Stack.Navigator>
-        <Stack.Screen name="Login" component={Login} options={{headerShown: false}}/>
-        <Stack.Screen name="Home" component={HomePage} options={{headerShown: false}}/>
-        <Stack.Screen name="Market" component={Market} options={{headerShown: false}}/>
-      </Stack.Navigator>
-    </NavigationContainer>
+    <Provider store={store}>
+      <NavigationContainer>
+        <Stack.Navigator>
+          <Stack.Screen name="Login" component={Login} options={{headerShown: false}}/>
+          <Stack.Screen name="Main" component={HomePage} options={{headerShown: false}}/>
+          <Stack.Screen name="Market" component={Market} options={{headerShown: false}}/>
+        </Stack.Navigator>
+      </NavigationContainer>
+    </Provider>
+    
   );
 };
 
-const HomePage = () => {
+const HomePage = (route) => {
   return(
     <Drawer.Navigator drawerContent={props =><DrawerContent {...props}/> }>
       <Drawer.Screen name="Home" component={Home} options={{headerShown: false}}/>

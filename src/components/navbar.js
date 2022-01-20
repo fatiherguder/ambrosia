@@ -1,8 +1,16 @@
 
 import React from 'react';
 import {Dimensions, View, StyleSheet, Text, TouchableOpacity, Image} from 'react-native';
+import { useDispatch } from 'react-redux';
+import { removeCartData } from '../store/cartSlice';
 
 const Navbar = (props) => {
+    const dispatch = useDispatch()
+
+    const deleteBtn = async() => {
+        await dispatch(removeCartData())
+        window.location.reload(false);
+    }
 
 
   return (
@@ -12,7 +20,7 @@ const Navbar = (props) => {
                 <TouchableOpacity style={styles.iconArea} onPress={() => props.navigation.navigate('Home')}>
                     <Image source={require('../assets/icons/back.png')} style={styles.icon}/>
                 </TouchableOpacity>
-                <TouchableOpacity style={styles.iconArea} onPress={() => props.navigation.navigate('Sepetim')}>
+                <TouchableOpacity style={styles.iconArea} onPress={() => deleteBtn()}>
                     <Image source={require('../assets/icons/trash.png')} style={styles.icon}/>
                 </TouchableOpacity>
             </View>

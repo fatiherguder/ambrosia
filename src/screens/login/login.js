@@ -2,14 +2,34 @@
 import React from 'react';
 import {Dimensions, SafeAreaView, Image, StyleSheet, View, ImageBackground,TextInput} from 'react-native';
 import CustomButton from '../../components/button';
-import CustomInput from '../../components/input';
 import auth from '@react-native-firebase/auth';
+import { getFirestore, collection, getDoc, doc } from "firebase/firestore"
+import { useNavigation } from "@react-navigation/core";
+import { useSelector, useDispatch } from 'react-redux'
+import {setUserData} from '../../store/userSlice'
 
 const Login = (props) => {
   const [emailValue, setEmailValue] = React.useState("");
   const [passValue, setPassValue] = React.useState("");
+  const navigation = useNavigation();
+  const dispatch = useDispatch()
 
   const back = require('../../assets/img/back.jpg');
+  const db = getFirestore();
+
+  const Login = () => {
+    auth().signInWithEmailAndPassword(emailValue,passValue)
+    .then(async () => {
+      userId = auth().currentUser.uid
+      const docSnap = await getDoc(doc(db, "users", userId));
+      dispatch(setUserData(docSnap.data()))
+    })
+        .then(() => {
+          navigation.navigate('Main')
+        })
+        .catch(error => console.log(error))
+      
+  }
 
   return (
     <ImageBackground resizeMode="cover" source={back} style={styles.image}>
@@ -23,10 +43,7 @@ const Login = (props) => {
       <View style={styles.inputArea}>
         <TextInput placeholder="Parola" style={styles.input} onChangeText={setPassValue}/>
       </View>
-      <CustomButton onPress={() => auth().signInWithEmailAndPassword(emailValue,passValue)
-        .then(() => props.navigation.navigate('Home'))
-        .catch(error => console.log(error))
-      }/>
+      <CustomButton onPress={() => Login()}/>
     </SafeAreaView>
     </ImageBackground>
   );

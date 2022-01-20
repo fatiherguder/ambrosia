@@ -1,12 +1,21 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import {Dimensions, View, StyleSheet, Text, TouchableOpacity, Image, Alert} from 'react-native';
 import { ScrollView } from 'react-native-gesture-handler';
 import { SafeAreaView } from 'react-native-safe-area-context';
+import { useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import MarketItem from '../../components/marketItem';
-import Navbar from '../../components/navbar';
+
+
 const Market = (props) => {
 
-    const createTwoButtonAlert = () =>
+    const dispatch = useDispatch()
+    const marketState = useSelector(state => state.marketData)
+
+    const [data,setData] = useState([]);
+    
+
+    const createAlert = () =>
     Alert.alert(
       "Bilgi",
       "Çok Yakında ...",
@@ -20,8 +29,18 @@ const Market = (props) => {
       ]
     );
 
+    const { index} = props.route.params;
+    const fecthData = async () => {
+        setData(marketState[index].menu)
+    }
+
     const burger = require('../../assets/img/burger.jpg');
     const lokum = require('../../assets/img/food-1.jpg');
+
+    useEffect(() => {
+        fecthData()
+    }, [data])
+
 
   return (
     <>
@@ -30,23 +49,23 @@ const Market = (props) => {
                 <TouchableOpacity style={styles.iconArea} onPress={() => props.navigation.navigate('Home')}>
                     <Image source={require('../../assets/icons/back.png')} style={styles.icon}/>
                 </TouchableOpacity>
-                <TouchableOpacity style={styles.iconArea} onPress={createTwoButtonAlert}>
+                <TouchableOpacity style={styles.iconArea} onPress={createAlert}>
                     <Image source={require('../../assets/icons/info.png')} style={styles.icon}/>
                 </TouchableOpacity>
             </View>
             <View style={styles.titleArea}>
-                <Text style={styles.title}>SteakHouse</Text>
+                <Text style={styles.title}>{marketState[index].name}</Text>
                 <Text style={styles.subtitle}>Sepetinde duracağına söyle midende dursun.</Text>
             </View>
         </SafeAreaView>
 
         <ScrollView style={styles.bg}>
-            <MarketItem title={'Steak Burger'} subtitle={'Steak Burger + Cips + İçecek'} price={'50'} img={burger}/>
-            <MarketItem title={'Lokum'} subtitle={'Lokum + Cips + İçecek'} price={'80'} img={lokum}/>
-            <MarketItem title={'Steak Burger'} subtitle={'Steak Burger + Cips + İçecek'} price={'50'} img={burger}/>
-            <MarketItem title={'Lokum'} subtitle={'Lokum + Cips + İçecek'} price={'80'} img={lokum}/>
-            <MarketItem title={'Steak Burger'} subtitle={'Steak Burger + Cips + İçecek'} price={'50'} img={burger}/>
-            <MarketItem title={'Lokum'} subtitle={'Lokum + Cips + İçecek'} price={'80'} img={lokum}/>
+            {
+                Object.values(data).map( item => {
+                    const marketName = marketState[index].name;
+                    return <MarketItem title={item.name} subtitle={item.desc} price={item.price} img={burger} name={marketName} navigation={props.navigation}/>
+                })
+            }
         </ScrollView>
     </>
   );

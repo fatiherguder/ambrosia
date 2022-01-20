@@ -1,27 +1,35 @@
 
-import React from 'react';
-import {Dimensions, View, StyleSheet, Text, TouchableOpacity, Image} from 'react-native';
-import { DrawerContentScrollView, DrawerItem } from '@react-navigation/drawer';
+import React,{useEffect} from 'react';
+import {Dimensions, StyleSheet, Text, TouchableOpacity} from 'react-native';
 import CartItem from '../../components/cartItem';
-import HomeNavbar from '../../components/homeNavbar';
 import Navbar from '../../components/navbar';
 import { ScrollView } from 'react-native-gesture-handler';
 import { SafeAreaView } from 'react-native-safe-area-context';
+import { useSelector } from 'react-redux';
 
 const Cart = (props) => {
 
     var pizza1 = require('../../assets/img/pizza-1.jpg')
-    var pizza2 = require('../../assets/img/pizza-2.jpg')
-    var pizza3 = require('../../assets/img/pizza-3.jpg')
+
+    const cartData = useSelector(state => state.cartData)
+
+
+      useEffect(() => {
+        console.log(cartData)
+      },[])
+
 
   return (
     <>
         <SafeAreaView style={{backgroundColor:'#457b9d'}}>
             <Navbar navigation={props.navigation}/>
             <ScrollView style={styles.bg}>
-                <CartItem count={1} market={'Kopernik Pizza'} product={'Full Karışık Mars Pizza'} price={75} img={pizza1}/>
-                <CartItem count={1} market={'Kopernik Pizza'} product={'Venüs Pizza'} price={60} img={pizza2}/>
-                <CartItem count={2} market={'Kopernik Pizza'} product={'Güneş Pizza'} price={120} img={pizza3}/>
+                {
+                    Object.values(cartData).map(item => {
+                        return <CartItem count={1} market={item.marketName} product={item.title} price={item.price} img={pizza1} />
+                    })
+                }
+                
             </ScrollView>
             <TouchableOpacity style={styles.btn}><Text style={styles.btnText}>Sepeti Onayla</Text></TouchableOpacity>
         </SafeAreaView>
