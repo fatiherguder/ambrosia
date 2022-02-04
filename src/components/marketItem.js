@@ -24,7 +24,7 @@ const MarketItem = (props) => {
     );
 
     const onClick = async() => {
-        const data = await {title: props.title, subtitle: props.subtitle, price: props.price, marketName:props.name}
+        const data = await {title: props.title, subtitle: props.subtitle, price: props.price, marketName:props.name, marketIndex:props.index}
         await dispatch(setCartData(data))
         createAlert()
     }

@@ -55,7 +55,6 @@ const Market = (props) => {
             </View>
             <View style={styles.titleArea}>
                 <Text style={styles.title}>{marketState[index].name}</Text>
-                <Text style={styles.subtitle}>Sepetinde duracağına söyle midende dursun.</Text>
             </View>
         </SafeAreaView>
 
@@ -63,7 +62,7 @@ const Market = (props) => {
             {
                 Object.values(data).map( item => {
                     const marketName = marketState[index].name;
-                    return <MarketItem title={item.name} subtitle={item.desc} price={item.price} img={burger} name={marketName} navigation={props.navigation}/>
+                    return <MarketItem title={item.name} subtitle={item.desc} price={item.price} img={burger} name={marketName} index={index} navigation={props.navigation}/>
                 })
             }
         </ScrollView>

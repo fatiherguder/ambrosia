@@ -1,23 +1,50 @@
 
-import React,{useEffect} from 'react';
+import React,{useEffect, useState} from 'react';
 import {Dimensions, StyleSheet, Text, TouchableOpacity} from 'react-native';
 import CartItem from '../../components/cartItem';
 import Navbar from '../../components/navbar';
 import { ScrollView } from 'react-native-gesture-handler';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
+import { doc, getDoc, getFirestore, updateDoc } from '@firebase/firestore';
+import { setCartData } from '../../store/cartSlice';
 
 const Cart = (props) => {
 
     var pizza1 = require('../../assets/img/pizza-1.jpg')
+    const id = "2WBgM5IxBtu4feMvPCvN"
 
     const cartData = useSelector(state => state.cartData)
+    const userState = useSelector(state => state.userData)
+    const dispatch = useDispatch()
+    const db = getFirestore();
+    const [orderData, setOrderData] = useState([])
 
+      const sendOrder = async() => {
+        const index = await cartData[0].marketIndex;
+        const id = await userState[0].markets[index]
+        const marketRef = await doc(db, "markets", id);
+        console.log(userState);
+        const data = await[...orderData,
+            {
+                id: userState[0].id,
+                name: userState[0].name,
+                email: userState[0].email,
+                adress: userState[0].adress,
+                phone: userState[0].phone,
+                cart: cartData,
+            }
+        ]
+        await updateDoc(marketRef, {
+            orders: data
+          });
+      }
 
       useEffect(() => {
-        console.log(cartData)
+         getDoc(doc(db, "markets", id)).then(data=>{
+            setOrderData(data.data().orders)
+            })
       },[])
-
 
   return (
     <>
@@ -31,7 +58,7 @@ const Cart = (props) => {
                 }
                 
             </ScrollView>
-            <TouchableOpacity style={styles.btn}><Text style={styles.btnText}>Sepeti Onayla</Text></TouchableOpacity>
+            <TouchableOpacity onPress={() => sendOrder()} style={styles.btn}><Text style={styles.btnText}>Sepeti Onayla</Text></TouchableOpacity>
         </SafeAreaView>
     </>
   );

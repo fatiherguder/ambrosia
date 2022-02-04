@@ -1,6 +1,6 @@
 
 import React,{useEffect} from 'react';
-import {Dimensions, SafeAreaView, Image, StyleSheet, ScrollView,View,Text} from 'react-native';
+import {Dimensions, SafeAreaView, Image, StyleSheet, ScrollView,View} from 'react-native';
 import CustomCard from '../../components/card';
 import HomeNavbar from '../../components/homeNavbar';
 import { getFirestore, getDoc, doc } from "firebase/firestore"
@@ -15,6 +15,7 @@ const Home = (props) => {
 
   const userState = useSelector(state => state.userData)
   const marketState = useSelector(state => state.marketData)
+  
   
 
   const getMarketData = async () => {
